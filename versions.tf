@@ -6,8 +6,12 @@ terraform {
     github = {
       source = "integrations/github"
     }
-    mcaf = {
-      source = "schubergphilis/mcaf"
+    #mcaf = {
+    #  source = "schubergphilis/mcaf"
+    #}
+    controltower = {
+      source  = "idealo/controltower"
+      version = "~> 1.0"
     }
     tfe = {
       source  = "hashicorp/tfe"

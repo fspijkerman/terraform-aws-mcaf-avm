@@ -3,10 +3,12 @@ provider "aws" {
   region = var.region
 
   assume_role {
-    role_arn = "arn:aws:iam::${module.account.id}:role/AWSControlTowerExecution"
+    #role_arn = "arn:aws:iam::${module.account.id}:role/AWSControlTowerExecution" 
+    role_arn = "arn:aws:iam::${controltower_aws_account.account.account_id}:role/AWSControlTowerExecution"
   }
 }
 
+/*
 module "account" {
   source               = "github.com/fspijkerman/terraform-aws-mcaf-account?ref=hotfix%2fgroup_id"
   account              = var.name
@@ -16,6 +18,26 @@ module "account" {
   sso_email            = var.account_settings.sso_email
   sso_firstname        = var.account_settings.sso_firstname
   sso_lastname         = var.account_settings.sso_lastname
+}
+*/
+
+resource "controltower_aws_account" "account" {
+  name                     = var.name
+  email                    = var.account_settings.email
+  organizational_unit      = var.account_settings.organizational_unit
+  provisioned_product_name = var.name
+
+  sso {
+    first_name = var.account_settings.sso_firstname
+    last_name  = var.account_settings.sso_lastname
+    email      = var.account_settings.email
+  }
+
+  tags = var.tags
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 module "tfe_workspace" {
@@ -99,7 +121,7 @@ module "additional_tfe_workspaces" {
   }, each.value.clear_text_terraform_variables)
 }
 
-resource "aws_iam_account_alias" "alias" {
-  provider      = aws.account
-  account_alias = "${try(var.account_settings.alias_prefix, "")}${var.name}"
-}
+#resource "aws_iam_account_alias" "alias" {
+#  provider      = aws.account
+#  account_alias = "${try(var.account_settings.alias_prefix, "")}${var.name}"
+#}

@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "account" {
-  source               = "github.com/schubergphilis/terraform-aws-mcaf-account?ref=v0.4.0"
+  source               = "github.com/fspijkerman/terraform-aws-mcaf-account?ref=hotfix%2fgroup_id"
   account              = var.name
   create_email_address = var.account_settings.create_email_address
   email                = var.account_settings.email

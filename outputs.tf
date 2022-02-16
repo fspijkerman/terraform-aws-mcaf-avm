@@ -1,5 +1,5 @@
 output "id" {
-  value = controltower_aws_account.account.id
+  value = controltower_aws_account.account.account_id
   #value       = module.account.id
   description = "The AWS account ID"
 }
